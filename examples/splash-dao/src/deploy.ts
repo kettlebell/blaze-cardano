@@ -178,7 +178,7 @@ async function mintNFTs(
     console.log("Policy ID for " + assetName + ": " + policyId);
     const unit = policyId + assetName;
     txBuilder = txBuilder
-      .addMint(script, new Map().set(unit, quantity), Data.void());
+      .addMint(policyId, new Map().set(unit, quantity), Data.void());
     console.log("Added mint to TX for " + assetName);
   }
 
@@ -232,7 +232,7 @@ function buildNFTDetails(
   ) => {
     return {
       script: e[0],
-      policyId: e[1],
+      policyId: Core.PolicyId(e[1]),
       assetName: "a4",
       quantity,
     };
@@ -960,6 +960,10 @@ function stringToHex(s: string) {
   const encoder = new TextEncoder();
   const uint8Array = encoder.encode(s);
   return new Core.CborWriter().writeByteString(uint8Array).encodeAsHex();
+}
+
+function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 // generateSeed();
